@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+        }
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #4285F4;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            line-height: 100px;
+            cursor: pointer;
+        }
+        .matched {
+            background-color: #34A853;
+        }
+    </style>
+</head>
+<body>
+    <h1>Memory Card Game</h1>
+    <div class="game-board" id="gameBoard"></div>
+    <script>
+        const board = document.getElementById("gameBoard");
+        const cards = ["A", "A", "B", "B", "C", "C", "D", "D"].sort(() => Math.random() - 0.5);
+
+        let firstCard = null;
+        let secondCard = null;
+
+        function createBoard() {
+            cards.forEach((cardValue) => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.textContent = "?";
+                card.dataset.value = cardValue;
+
+                card.onclick = () => {
+                    if (!firstCard) {
+                        firstCard = card;
+                        card.textContent = cardValue;
+                    } else if (!secondCard && card !== firstCard) {
+                        secondCard = card;
+                        card.textContent = cardValue;
+
+                        if (firstCard.dataset.value === secondCard.dataset.value) {
+                            firstCard.className = "card matched";
+                            secondCard.className = "card matched";
+                        } else {
+                            setTimeout(() => {
+                                firstCard.textContent = "?";
+                                secondCard.textContent = "?";
+                            }, 1000);
+                        }
+                        firstCard = null;
+                        secondCard = null;
+                    }
+                };
+
+                board.appendChild(card);
+            });
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>
