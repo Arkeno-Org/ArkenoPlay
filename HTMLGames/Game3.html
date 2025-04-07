@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platformer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            background-color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="platformCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById("platformCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let player = { x: 50, y: 300, width: 50, height: 50, speed: 5, velocity: 0, gravity: 0.5 };
+        let ground = { x: 0, y: 350, width: 800, height: 50 };
+
+        function drawPlayer() {
+            ctx.fillStyle = "#FF4500";
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
+
+        function drawGround() {
+            ctx.fillStyle = "#228B22";
+            ctx.fillRect(ground.x, ground.y, ground.width, ground.height);
+        }
+
+        function updatePlayer() {
+            player.velocity += player.gravity;
+            player.y += player.velocity;
+
+            // Stop player on ground
+            if (player.y + player.height > ground.y) {
+                player.y = ground.y - player.height;
+                player.velocity = 0;
+            }
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.code === "Space" && player.y + player.height === ground.y) {
+                player.velocity = -10; // Jump
+            }
+            if (event.code === "ArrowRight") {
+                player.x += player.speed; // Move right
+            }
+            if (event.code === "ArrowLeft") {
+                player.x -= player.speed; // Move left
+            }
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGround();
+            updatePlayer();
+            drawPlayer();
+        }
+
+        setInterval(draw, 10);
+    </script>
+</body>
+</html>
