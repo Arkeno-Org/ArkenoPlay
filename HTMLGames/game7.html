@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird</title>
+    <style>
+        canvas {
+            display: block;
+            margin: auto;
+            background-color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="flappyCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById("flappyCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let bird = { x: 100, y: 200, width: 20, height: 20, velocity: 0, gravity: 0.5 };
+        let pipes = [];
+        let score = 0;
+
+        function drawBird() {
+            ctx.fillStyle = "yellow";
+            ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+        }
+
+        function drawPipes() {
+            ctx.fillStyle = "green";
+            pipes.forEach((pipe) => {
+                ctx.fillRect(pipe.x, 0, pipe.width, pipe.topHeight);
+                ctx.fillRect(pipe.x, canvas.height - pipe.bottomHeight, pipe.width, pipe.bottomHeight);
+            });
+        }
+
+        function updatePipes() {
+            pipes.forEach((pipe) => {
+                pipe.x -= 2;
+            });
+
+            if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - 200) {
+                let gapHeight = 100;
+                let topHeight = Math.random() * (canvas.height - gapHeight);
+                pipes.push({ x: canvas.width, width: 50, topHeight, bottomHeight: canvas.height - topHeight - gapHeight });
+            }
+
+            pipes = pipes.filter((pipe) => pipe.x > -pipe.width);
+        }
+
+        function updateBird() {
+            bird.velocity += bird.gravity;
+            bird.y += bird.velocity;
+
+            if (bird.y < 0) bird.y = 0;
+            if (bird.y > canvas.height - bird.height) bird.y = canvas.height - bird.height;
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.code === "Space") {
+                bird.velocity = -10;
+            }
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPipes();
+            drawBird();
+        }
+
+        function update() {
+            updatePipes();
+            updateBird();
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+        }
+
+        setInterval(gameLoop, 20);
+    </script>
+</body>
+</html>
