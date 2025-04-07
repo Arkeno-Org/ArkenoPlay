@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Solver</title>
+    <style>
+        canvas {
+            display: block;
+            margin: auto;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Maze Solver</h1>
+    <canvas id="mazeCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById("mazeCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const maze = [
+            [1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1],
+        ];
+
+        const cellSize = canvas.width / maze[0].length;
+
+        function drawMaze() {
+            maze.forEach((row, y) => {
+                row.forEach((cell, x) => {
+                    ctx.fillStyle = cell === 1 ? "black" : "white";
+                    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                });
+            });
+        }
+
+        drawMaze();
+    </script>
+</body>
+</html>
