@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Menu</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        .game-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .game {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            height: 150px;
+            background-color: #4285F4;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .game:hover {
+            background-color: #3367D6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select a Game</h1>
+    <div class="game-menu">
+        <div class="game" onclick="notImplemented()">3D Endless Runner</div>
+        <div class="game" onclick="window.location.href='HTMLGames/game2.html'">Ping Pong</div>
+        <div class="game" onclick="window.location.href='HTMLGames/game3.html'">Platformer</div>
+        <div class="game" onclick="window.location.href='HTMLGames/game4.html'">Timing Click Game</div>
+        <div class="game" onclick="window.location.href='HTMLGames/game5.html'">Memory Card Game</div>
+        <div class="game" onclick="window.location.href='HTMLGames/game6.html'">Maze Solver</div>
+        <div class="game" onclick="window.location.href='HTMLGames/game7.html'">Flappy Bird</div>
+        <div class="game" onclick="window.location.href='HTMLGames/game8.html'">Tic-Tac-Toe</div>
+        <div class="game" onclick="window.location.href='HTMLGames/game9.html'">Snake Game</div>
+    </div>
+    <script>
+        function notImplemented() {
+            alert("Not Implemented");
+        }
+    </script>
+</body>
+</html>
