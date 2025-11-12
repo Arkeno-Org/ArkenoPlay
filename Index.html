@@ -44,7 +44,20 @@
     </style>
 </head>
 <body>
-    <h1>Select a Game</h1>
+
+      <nav>
+        <a href="#" onclick="showSection('home')">Home Page</a> |
+        <a href="#" onclick="showSection('HTMLGames')">Some small projects!</a> |
+        <a href="#" onclick="showSection('Devs')">Developer Games!</a>
+    </nav>
+    
+    <section id="home" class="active">
+        <h2>Arkeno Play!</h2>
+        <p>A</p>
+    </section>
+    <section id="HTMLGames">
+        <h2>Some of our HTML Games</h2>
+         <h3>Select a Game</h3>
     <div class="game-menu">
         <div class="game" onclick="notImplemented()">3D Endless Runner</div>
         <div class="game" onclick="window.location.href='HTMLGames/game2.html'">Ping Pong</div>
@@ -54,12 +67,19 @@
         <div class="game" onclick="window.location.href='HTMLGames/game6.html'">Maze Solver</div>
         <div class="game" onclick="window.location.href='HTMLGames/game7.html'">Flappy Bird</div>
         <div class="game" onclick="window.location.href='HTMLGames/game8.html'">Tic-Tac-Toe</div>
-        <div class="game" onclick="window.location.href='HTMLGames/game9.html'">Snake Game</div>
+        <div class="game" onclick='notImplemented'">Snake Game</div>
     </div>
     <script>
         function notImplemented() {
             alert("Not Implemented");
         }
     </script>
+    </section>
+    
+    <section id="Devs>
+        <h2>Dev Games</h2>
+        <p>No Developers have made any games :( Make yours today and upload it on our repo</p>
+    </section>
 </body>
 </html>
+
