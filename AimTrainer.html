@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArkenoPlay Aim Trainer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            cursor: none; /* Hides the default mouse pointer */
+        }
+
+        #game-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            background-color: #1e1e1e;
+            border: 2px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .target {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #ff4757;
+            border-radius: 50%;
+            cursor: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px #ff4757;
+            transition: transform 0.1s ease;
+        }
+
+        .target::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background-color: #ffffff;
+            border-radius: 50%;
+        }
+
+        /* Custom Crosshair */
+        #crosshair {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        #crosshair::before, #crosshair::after {
+            content: '';
+            position: absolute;
+            background-color: #2ed573;
+        }
+
+        #crosshair::before {
+            top: 11px;
+            left: 0;
+            width: 24px;
+            height: 2px;
+        }
+
+        #crosshair::after {
+            top: 0;
+            left: 11px;
+            width: 2px;
+            height: 24px;
+        }
+
+        #ui {
+            display: flex;
+            justify-content: space-between;
+            width: 800px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #start-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #2ed573;
+            color: #121212;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #start-btn:hover {
+            background-color: #26af5f;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- UI Scoreboard -->
+    <div id="ui">
+        <div>Score: <span id="score">0</span></div>
+        <div>Time Left: <span id="timer">30</span>s</div>
+    </div>
+
+    <!-- Game Board -->
+    <div id="game-container">
+        <!-- Target will spawn here via JS -->
+    </div>
+
+    <br>
+    <button id="start-btn" onclick="startGame()">Start Game</button>
+
+    <!-- Custom Crosshair Element -->
+    <div id="crosshair"></div>
+
+    <script>
+        const container = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score');
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('start-btn');
+        const crosshair = document.getElementById('crosshair');
+
+        let score = 0;
+        let timeLeft = 30;
+        let gameInterval = null;
+        let targetElement = null;
+
+        // Move custom crosshair with mouse
+        window.addEventListener('mousemove', (e) => {
+            crosshair.style.left = e.pageX + 'px';
+            crosshair.style.top = e.pageY + 'px';
+        });
+
+        function startGame() {
+            // Reset state
+            container.innerHTML = '';
+            score = 0;
+            timeLeft = 30;
+            scoreDisplay.textContent = score;
+            timerDisplay.textContent = timeLeft;
+            startBtn.style.display = 'none';
+
+            spawnTarget();
+
+            // Countdown timer
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function spawnTarget() {
+            if (timeLeft <= 0) return;
+
+            // Remove old target if it exists
+            if (targetElement) {
+                targetElement.remove();
+            }
+
+            const target = document.createElement('div');
+            target.classList.add('target');
+
+            // Random position inside the 800x500 box (accounting for target size)
+            const maxX = container.clientWidth - 40;
+            const maxY = container.clientHeight - 40;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            target.style.left = randomX + 'px';
+            target.style.top = randomY + 'px';
+
+            // Click action
+            target.addEventListener('click', () => {
+                score++;
+                scoreDisplay.textContent = score;
+                spawnTarget();
+            });
+
+            container.appendChild(target);
+            targetElement = target;
+        }
+
+        function endGame() {
+            clearInterval(gameInterval);
+            if (targetElement) targetElement.remove();
+            
+            container.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 24px; flex-direction: column;">
+                <div>Game Over!</div>
+                <div style="font-size: 18px; color: #2ed573; margin-top: 10px;">Final Score: ${score}</div>
+            </div>`;
+            
+            startBtn.style.display = 'block';
+            startBtn.textContent = 'Play Again';
+        }
+    </script>
+</body>
+</html>
